@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="format-detection" content="telephone=no,date=no,email=no,address=no">
+<title>BBA Marketing Attendance</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:sans-serif;background:#f0f4f8;-webkit-tap-highlight-color:rgba(0,0,0,.1);}
+header{background:linear-gradient(135deg,#1a3c5e,#2d6a9f);color:white;padding:14px 16px;display:flex;align-items:center;gap:10px;}
+header h1{font-size:.95rem;font-weight:700;}
+header p{font-size:.68rem;opacity:.8;}
+.ctrl{background:white;padding:12px 16px;border-bottom:1px solid #dde3ea;}
+.row2{display:flex;gap:10px;margin-bottom:10px;}
+.f{display:flex;flex-direction:column;gap:4px;flex:1;}
+.f>label{font-size:.67rem;font-weight:700;color:#555;text-transform:uppercase;}
+input[type=date]{border:1.5px solid #cdd5df;border-radius:8px;padding:8px 10px;font-size:.88rem;width:100%;min-height:42px;background:white;outline:none;-webkit-appearance:none;appearance:none;color:#222;}
+.f input[type=number],.f input[type=text]{border:1.5px solid #cdd5df;border-radius:8px;padding:8px 10px;font-size:.88rem;width:100%;background:white;outline:none;-webkit-appearance:none;}
+.mabts{display:flex;gap:8px;margin-top:6px;align-items:center;}
+.mabts span{font-size:.78rem;color:#666;flex-shrink:0;}
+a.mab{display:block;flex:1;padding:13px 4px;border-radius:8px;font-size:.9rem;font-weight:700;text-align:center;text-decoration:none;}
+.mab-p{background:#28a745;color:white !important;}
+.mab-a{background:#dc3545;color:white !important;}
+.stats{background:#eaf1fb;padding:8px 16px;display:flex;gap:10px;font-size:.78rem;flex-wrap:wrap;align-items:center;}
+.st{display:flex;align-items:center;gap:4px;}
+.dot{width:8px;height:8px;border-radius:50%;}
+.dP{background:#28a745;}.dA{background:#dc3545;}.dU{background:#adb5bd;}
+.pct{margin-left:auto;font-weight:700;color:#1a3c5e;}
+.list{padding:10px 12px 110px;}
+.card{background:white;border-radius:12px;padding:13px 14px;box-shadow:0 1px 5px rgba(0,0,0,.07);display:flex;align-items:center;gap:10px;border-left:4px solid #e0e0e0;margin-bottom:8px;}
+.card.sP{border-left-color:#28a745;background:#f0fff4;}
+.card.sA{border-left-color:#dc3545;background:#fff5f5;}
+.num{font-size:.72rem;color:#bbb;width:20px;text-align:center;flex-shrink:0;}
+.info{flex:1;min-width:0;}
+.nm{font-size:.85rem;font-weight:700;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+/* Fix blue phone-number detection on iOS */
+.en{font-size:.67rem;color:#999 !important;font-family:monospace;text-decoration:none !important;}
+.btns{display:flex;gap:8px;flex-shrink:0;}
+/* P/A circles: href="#" + onclick = works on ALL browsers and iOS */
+a.ab{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;border:2.5px solid;font-size:.9rem;font-weight:800;background:white;text-decoration:none !important;-webkit-tap-highlight-color:rgba(0,0,0,.15);cursor:pointer;}
+a.ab.P{border-color:#28a745;color:#28a745 !important;}
+a.ab.P.on{background:#28a745;color:white !important;}
+a.ab.A{border-color:#dc3545;color:#dc3545 !important;}
+a.ab.A.on{background:#dc3545;color:white !important;}
+.foot{position:fixed;bottom:0;left:0;right:0;background:white;border-top:2px solid #dde3ea;padding:10px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom));display:flex;gap:7px;z-index:100;}
+a.fb{display:block;flex:1;padding:12px 2px;border-radius:8px;font-size:.72rem;font-weight:700;text-align:center;text-decoration:none !important;}
+.fc{background:#f0f4f8;color:#555 !important;border:1.5px solid #ccc;}
+.fp{background:#2d6a9f;color:white !important;}
+.fv{background:#28a745;color:white !important;}
+.fs{background:#0f9d58;color:white !important;}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;}
+.ov.show{display:flex;}
+.modal{background:white;border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-height:80vh;overflow-y:auto;}
+.hdl{width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 14px;}
+.modal h2{font-size:1rem;color:#1a3c5e;margin-bottom:10px;}
+.modal ol{padding-left:1.2em;line-height:2;font-size:.85rem;}
+.modal textarea{width:100%;height:130px;font-size:.68rem;font-family:monospace;border:1px solid #dde3ea;border-radius:8px;padding:8px;resize:none;background:#f4f6f9;margin:8px 0;}
+.hint{font-size:.76rem;color:#555;margin:10px 0 4px;}
+a.mbtn{display:block;padding:13px;border-radius:10px;font-size:.9rem;font-weight:700;text-align:center;text-decoration:none !important;margin-top:8px;}
+.mb1{background:#2d6a9f;color:white !important;}
+.mb2{background:#28a745;color:white !important;}
+a.xbtn{float:right;background:#eee;border-radius:50%;width:30px;height:30px;font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none !important;color:#333 !important;}
+.okbar{background:#d4edda;color:#155724;padding:7px;border-radius:6px;text-align:center;font-size:.82rem;margin-top:8px;display:none;}
+</style>
+</head>
+<body>
+<header>
+  <div style="font-size:1.8rem">&#127891;</div>
+  <div><h1>BBA Marketing &ndash; Attendance</h1><p>GTU &middot; Batch 2024-27 &middot; Sem 5</p></div>
+</header>
+<div class="ctrl">
+  <div class="row2">
+    <div class="f"><label for="dt">Date</label><input type="date" id="dt" value="2026-06-30"></div>
+    <div class="f"><label for="ln">Lecture No.</label><input type="number" id="ln" min="1" max="31" value="1"></div>
+  </div>
+  <div class="f" style="margin-bottom:10px"><label for="sb">Subject</label><input type="text" id="sb" placeholder="e.g. Marketing Management"></div>
+  <div class="f" style="margin-bottom:10px"><label for="fc">Faculty</label><input type="text" id="fc" placeholder="Your name"></div>
+  <div class="mabts">
+    <span>Mark all:</span>
+    <a class="mab mab-p" href="#" onclick="markAll('P');return false;">&#10003; Present</a>
+    <a class="mab mab-a" href="#" onclick="markAll('A');return false;">&#10007; Absent</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="st"><span class="dot dP"></span>Present: <strong id="cP">0</strong></div>
+  <div class="st"><span class="dot dA"></span>Absent: <strong id="cA">0</strong></div>
+  <div class="st"><span class="dot dU"></span>Left: <strong id="cU">26</strong></div>
+  <div class="pct">Att: <span id="pct">--</span></div>
+</div>
+<div class="list">
+<div class="card" id="c0"><div class="num">1</div><div class="info"><div class="nm">AARATI GADHVI</div><div class="en">248390501001</div></div><div class="btns"><a class="ab P" id="lp0" href="#" onclick="sa(0,'P');return false;">P</a><a class="ab A" id="la0" href="#" onclick="sa(0,'A');return false;">A</a></div></div>
+<div class="card" id="c1"><div class="num">2</div><div class="info"><div class="nm">BAROT KHYATI DARSHANBHAI</div><div class="en">248390501003</div></div><div class="btns"><a class="ab P" id="lp1" href="#" onclick="sa(1,'P');return false;">P</a><a class="ab A" id="la1" href="#" onclick="sa(1,'A');return false;">A</a></div></div>
+<div class="card" id="c2"><div class="num">3</div><div class="info"><div class="nm">CHIRAG SAHU</div><div class="en">248390501009</div></div><div class="btns"><a class="ab P" id="lp2" href="#" onclick="sa(2,'P');return false;">P</a><a class="ab A" id="la2" href="#" onclick="sa(2,'A');return false;">A</a></div></div>
+<div class="card" id="c3"><div class="num">4</div><div class="info"><div class="nm">CHOPDA ESHA JAYSUKHBHAI</div><div class="en">248390501010</div></div><div class="btns"><a class="ab P" id="lp3" href="#" onclick="sa(3,'P');return false;">P</a><a class="ab A" id="la3" href="#" onclick="sa(3,'A');return false;">A</a></div></div>
+<div class="card" id="c4"><div class="num">5</div><div class="info"><div class="nm">CHUDASAMA DIXITKUMAR PARBATBHAI</div><div class="en">248390501011</div></div><div class="btns"><a class="ab P" id="lp4" href="#" onclick="sa(4,'P');return false;">P</a><a class="ab A" id="la4" href="#" onclick="sa(4,'A');return false;">A</a></div></div>
+<div class="card" id="c5"><div class="num">6</div><div class="info"><div class="nm">DHRUMIL PARMAR</div><div class="en">248390501012</div></div><div class="btns"><a class="ab P" id="lp5" href="#" onclick="sa(5,'P');return false;">P</a><a class="ab A" id="la5" href="#" onclick="sa(5,'A');return false;">A</a></div></div>
+<div class="card" id="c6"><div class="num">7</div><div class="info"><div class="nm">GAJERA DARSHAN PRAVINBHAI</div><div class="en">248390501015</div></div><div class="btns"><a class="ab P" id="lp6" href="#" onclick="sa(6,'P');return false;">P</a><a class="ab A" id="la6" href="#" onclick="sa(6,'A');return false;">A</a></div></div>
+<div class="card" id="c7"><div class="num">8</div><div class="info"><div class="nm">JASPREET KAUR</div><div class="en">248390501021</div></div><div class="btns"><a class="ab P" id="lp7" href="#" onclick="sa(7,'P');return false;">P</a><a class="ab A" id="la7" href="#" onclick="sa(7,'A');return false;">A</a></div></div>
+<div class="card" id="c8"><div class="num">9</div><div class="info"><div class="nm">JHA PRINCE SHYAMAKANT</div><div class="en">248390501022</div></div><div class="btns"><a class="ab P" id="lp8" href="#" onclick="sa(8,'P');return false;">P</a><a class="ab A" id="la8" href="#" onclick="sa(8,'A');return false;">A</a></div></div>
+<div class="card" id="c9"><div class="num">10</div><div class="info"><div class="nm">KADAVALA KRISHN ANILBHAI</div><div class="en">248390501024</div></div><div class="btns"><a class="ab P" id="lp9" href="#" onclick="sa(9,'P');return false;">P</a><a class="ab A" id="la9" href="#" onclick="sa(9,'A');return false;">A</a></div></div>
+<div class="card" id="c10"><div class="num">11</div><div class="info"><div class="nm">KALAVADIA HIMANI MANOJBHAI</div><div class="en">248390501025</div></div><div class="btns"><a class="ab P" id="lp10" href="#" onclick="sa(10,'P');return false;">P</a><a class="ab A" id="la10" href="#" onclick="sa(10,'A');return false;">A</a></div></div>
+<div class="card" id="c11"><div class="num">12</div><div class="info"><div class="nm">KAMBLE SAMYAK SIDDHARTHA</div><div class="en">248390501026</div></div><div class="btns"><a class="ab P" id="lp11" href="#" onclick="sa(11,'P');return false;">P</a><a class="ab A" id="la11" href="#" onclick="sa(11,'A');return false;">A</a></div></div>
+<div class="card" id="c12"><div class="num">13</div><div class="info"><div class="nm">KAPADIYA DENISHA SURAJKUMAR</div><div class="en">248390501028</div></div><div class="btns"><a class="ab P" id="lp12" href="#" onclick="sa(12,'P');return false;">P</a><a class="ab A" id="la12" href="#" onclick="sa(12,'A');return false;">A</a></div></div>
+<div class="card" id="c13"><div class="num">14</div><div class="info"><div class="nm">MAHEK RATHORE</div><div class="en">248390501034</div></div><div class="btns"><a class="ab P" id="lp13" href="#" onclick="sa(13,'P');return false;">P</a><a class="ab A" id="la13" href="#" onclick="sa(13,'A');return false;">A</a></div></div>
+<div class="card" id="c14"><div class="num">15</div><div class="info"><div class="nm">PANCHAL TAPAN BHAVESHBHAI</div><div class="en">248390501039</div></div><div class="btns"><a class="ab P" id="lp14" href="#" onclick="sa(14,'P');return false;">P</a><a class="ab A" id="la14" href="#" onclick="sa(14,'A');return false;">A</a></div></div>
+<div class="card" id="c15"><div class="num">16</div><div class="info"><div class="nm">PARTH YADAV</div><div class="en">248390501042</div></div><div class="btns"><a class="ab P" id="lp15" href="#" onclick="sa(15,'P');return false;">P</a><a class="ab A" id="la15" href="#" onclick="sa(15,'A');return false;">A</a></div></div>
+<div class="card" id="c16"><div class="num">17</div><div class="info"><div class="nm">PATEL AKSHI SUMITKUMAR</div><div class="en">248390501043</div></div><div class="btns"><a class="ab P" id="lp16" href="#" onclick="sa(16,'P');return false;">P</a><a class="ab A" id="la16" href="#" onclick="sa(16,'A');return false;">A</a></div></div>
+<div class="card" id="c17"><div class="num">18</div><div class="info"><div class="nm">PRAJAPATI SANDIP RAJUBHAI</div><div class="en">248390501052</div></div><div class="btns"><a class="ab P" id="lp17" href="#" onclick="sa(17,'P');return false;">P</a><a class="ab A" id="la17" href="#" onclick="sa(17,'A');return false;">A</a></div></div>
+<div class="card" id="c18"><div class="num">19</div><div class="info"><div class="nm">PUJARI JAY RAMKISHAN</div><div class="en">248390501053</div></div><div class="btns"><a class="ab P" id="lp18" href="#" onclick="sa(18,'P');return false;">P</a><a class="ab A" id="la18" href="#" onclick="sa(18,'A');return false;">A</a></div></div>
+<div class="card" id="c19"><div class="num">20</div><div class="info"><div class="nm">RATHOD KRRISH NAUSHIK</div><div class="en">248390501057</div></div><div class="btns"><a class="ab P" id="lp19" href="#" onclick="sa(19,'P');return false;">P</a><a class="ab A" id="la19" href="#" onclick="sa(19,'A');return false;">A</a></div></div>
+<div class="card" id="c20"><div class="num">21</div><div class="info"><div class="nm">RAVAL ASWINI PRAKASHCHANDRA</div><div class="en">248390501059</div></div><div class="btns"><a class="ab P" id="lp20" href="#" onclick="sa(20,'P');return false;">P</a><a class="ab A" id="la20" href="#" onclick="sa(20,'A');return false;">A</a></div></div>
+<div class="card" id="c21"><div class="num">22</div><div class="info"><div class="nm">SHARMA HIMANSHU JITENDRA</div><div class="en">248390501060</div></div><div class="btns"><a class="ab P" id="lp21" href="#" onclick="sa(21,'P');return false;">P</a><a class="ab A" id="la21" href="#" onclick="sa(21,'A');return false;">A</a></div></div>
+<div class="card" id="c22"><div class="num">23</div><div class="info"><div class="nm">SUTHAR NIKU BHANARAM</div><div class="en">248390501064</div></div><div class="btns"><a class="ab P" id="lp22" href="#" onclick="sa(22,'P');return false;">P</a><a class="ab A" id="la22" href="#" onclick="sa(22,'A');return false;">A</a></div></div>
+<div class="card" id="c23"><div class="num">24</div><div class="info"><div class="nm">VANJAR MADHAV LALJIBHAI</div><div class="en">248390501067</div></div><div class="btns"><a class="ab P" id="lp23" href="#" onclick="sa(23,'P');return false;">P</a><a class="ab A" id="la23" href="#" onclick="sa(23,'A');return false;">A</a></div></div>
+<div class="card" id="c24"><div class="num">25</div><div class="info"><div class="nm">YADAV MUSKAN RAVINDRABHAI</div><div class="en">248390501070</div></div><div class="btns"><a class="ab P" id="lp24" href="#" onclick="sa(24,'P');return false;">P</a><a class="ab A" id="la24" href="#" onclick="sa(24,'A');return false;">A</a></div></div>
+<div class="card" id="c25"><div class="num">26</div><div class="info"><div class="nm">MAHADI ABDULVOHIDOVICH BORUNOV</div><div class="en">248390501073</div></div><div class="btns"><a class="ab P" id="lp25" href="#" onclick="sa(25,'P');return false;">P</a><a class="ab A" id="la25" href="#" onclick="sa(25,'A');return false;">A</a></div></div>
+</div>
+<div class="foot">
+  <a class="fb fc" href="#" onclick="clearAll();return false;">&#128260; Clear</a>
+  <a class="fb fp" href="#" onclick="showCopy();return false;">&#128203; Copy</a>
+  <a class="fb fv" href="#" onclick="doExcel();return false;">&#8595; Excel</a>
+  <a class="fb fs" href="#" onclick="showGAS();return false;">&#128279; Sheets</a>
+</div>
+<div class="ov" id="ov" onclick="if(event.target===this)closeM();">
+  <div class="modal">
+    <div class="hdl"></div>
+    <a class="xbtn" href="#" onclick="closeM();return false;">&#10005;</a>
+    <h2 id="mT"></h2>
+    <div id="mB"></div>
+  </div>
+</div>
+<textarea id="gasStore" style="display:none">// BBA Marketing Attendance - Google Apps Script
+// Extensions > Apps Script > paste > Save > Run onOpen
+const ST=[["248390501001","AARATI GADHVI"],["248390501003","BAROT KHYATI DARSHANBHAI"],["248390501009","CHIRAG SAHU"],["248390501010","CHOPDA ESHA JAYSUKHBHAI"],["248390501011","CHUDASAMA DIXITKUMAR PARBATBHAI"],["248390501012","DHRUMIL PARMAR"],["248390501015","GAJERA DARSHAN PRAVINBHAI"],["248390501021","JASPREET KAUR"],["248390501022","JHA PRINCE SHYAMAKANT"],["248390501024","KADAVALA KRISHN ANILBHAI"],["248390501025","KALAVADIA HIMANI MANOJBHAI"],["248390501026","KAMBLE SAMYAK SIDDHARTHA"],["248390501028","KAPADIYA DENISHA SURAJKUMAR"],["248390501034","MAHEK RATHORE"],["248390501039","PANCHAL TAPAN BHAVESHBHAI"],["248390501042","PARTH YADAV"],["248390501043","PATEL AKSHI SUMITKUMAR"],["248390501052","PRAJAPATI SANDIP RAJUBHAI"],["248390501053","PUJARI JAY RAMKISHAN"],["248390501057","RATHOD KRRISH NAUSHIK"],["248390501059","RAVAL ASWINI PRAKASHCHANDRA"],["248390501060","SHARMA HIMANSHU JITENDRA"],["248390501064","SUTHAR NIKU BHANARAM"],["248390501067","VANJAR MADHAV LALJIBHAI"],["248390501070","YADAV MUSKAN RAVINDRABHAI"],["248390501073","MAHADI ABDULVOHIDOVICH BORUNOV"]];
+function onOpen(){SpreadsheetApp.getUi().createMenu("Attendance").addItem("Open Sidebar","showSidebar").addToUi();}
+function showSidebar(){SpreadsheetApp.getUi().showSidebar(HtmlService.createHtmlOutput(sb()).setTitle("Attendance").setWidth(320));}
+function saveAtt(lno,data){var sh=SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Marketing");if(!sh)return"ERROR: Sheet tab Marketing not found";var col=2+parseInt(lno);data.forEach(function(r,i){var cell=sh.getRange(7+i,col);cell.setValue(r.v||"");if(r.v==="A"){cell.setBackground("#FF0000");cell.setFontColor("#FFFFFF");}else if(r.v==="P"){cell.setBackground("#C6EFCE");cell.setFontColor("#276221");}else{cell.setBackground(null);cell.setFontColor(null);}});for(var i=0;i<ST.length;i++){var v=sh.getRange(7+i,3,1,31).getValues()[0];sh.getRange(7+i,35).setValue(v.filter(function(x){return x==="P";}).length);}return"SUCCESS: Lecture "+lno+" saved!";}
+function sb(){var r="";ST.forEach(function(s,i){r+='<tr><td>'+(i+1)+'</td><td><b>'+s[1]+'</b></td><td><select id="s'+i+'"><option value="">-</option><option>P</option><option>A</option></select></td></tr>';});return'<html><head><style>body{font-family:Arial;padding:10px;font-size:12px}h3{color:#1a3c5e}input{width:100%;padding:6px;border:1px solid #ccc;border-radius:4px;margin-bottom:8px}table{width:100%;border-collapse:collapse}tr:nth-child(even){background:#f5f8fc}td{padding:3px 5px}select{width:50px}.rb{padding:5px 10px;border:none;border-radius:6px;font-size:11px;cursor:pointer;font-weight:bold;margin:2px}.rP{background:#28a745;color:white}.rA{background:#dc3545;color:white}.sv{width:100%;padding:10px;background:#1a3c5e;color:white;border:none;border-radius:8px;font-size:13px;font-weight:bold;cursor:pointer;margin-top:10px}.msg{margin-top:8px;padding:7px;border-radius:5px;font-size:11px;text-align:center}.ok{background:#d4edda;color:#155724}.er{background:#f8d7da;color:#721c24}</style></head><body><h3>Attendance Sync</h3>Lecture No:<input type="number" id="ln" value="1" min="1" max="31"><button class="rb rP" onclick="ma('P')">All P</button><button class="rb rA" onclick="ma('A')">All A</button><table>'+r+'</table><button class="sv" onclick="sv()">Save to Sheet</button><div id="m"></div><script>function ma(v){for(var i=0;i<26;i++){var e=document.getElementById("s"+i);if(e)e.value=v;}}function sv(){var l=document.getElementById("ln").value,d=[];for(var i=0;i<26;i++){var e=document.getElementById("s"+i);d.push({v:e?e.value:""});}document.getElementById("m").textContent="Saving...";google.script.run.withSuccessHandler(function(r){var m=document.getElementById("m");m.textContent=r;m.className="msg "+(r.indexOf("SUCCESS")===0?"ok":"er");}).saveAtt(l,d);}<\/script></body></html>';}</textarea>
+<script>
+var N=26;
+var att={};
+function sa(i,v){
+  att[i]=v;
+  var c=document.getElementById('c'+i);
+  if(c)c.className='card s'+v;
+  var lp=document.getElementById('lp'+i);
+  var la=document.getElementById('la'+i);
+  if(lp)lp.className='ab P'+(v==='P'?' on':'');
+  if(la)la.className='ab A'+(v==='A'?' on':'');
+  upd();
+}
+function markAll(v){for(var i=0;i<N;i++)sa(i,v);}
+function clearAll(){
+  att={};
+  for(var i=0;i<N;i++){
+    var c=document.getElementById('c'+i);if(c)c.className='card';
+    var lp=document.getElementById('lp'+i);if(lp)lp.className='ab P';
+    var la=document.getElementById('la'+i);if(la)la.className='ab A';
+  }
+  upd();
+}
+function upd(){
+  var p=0,a=0,u=0;
+  for(var i=0;i<N;i++){var v=att[i];if(v==='P')p++;else if(v==='A')a++;else u++;}
+  document.getElementById('cP').textContent=p;
+  document.getElementById('cA').textContent=a;
+  document.getElementById('cU').textContent=u;
+  var t=p+a;
+  document.getElementById('pct').textContent=t>0?Math.round(p/t*100)+'%':'--';
+}
+function getD(){var v=document.getElementById('dt').value;if(!v)return'';var p=v.split('-');return p[2]+'-'+p[1]+'-'+p[0];}
+function getLn(){return document.getElementById('ln').value||'';}
+function getSb(){return document.getElementById('sb').value||'';}
+function getFc(){return document.getElementById('fc').value||'';}
+function doExcel(){
+  var rows='';
+  for(var i=0;i<N;i++){
+    var c=document.getElementById('c'+i);
+    var nm=c.querySelector('.nm').textContent;
+    var en=c.querySelector('.en').textContent;
+    var v=att[i]||'';
+    var st='';
+    if(v==='A')st=' style="background:#FF0000;color:#FFFFFF;font-weight:bold"';
+    else if(v==='P')st=' style="background:#C6EFCE;color:#276221"';
+    rows+='<tr><td>'+(i+1)+'</td><td>'+en+'</td><td>'+nm+'</td><td'+st+'>'+(v||'-')+'</td></tr>';
+  }
+  var p=0;for(var k in att){if(att[k]==='P')p++;}
+  var xls='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>table{border-collapse:collapse;font-family:Arial;font-size:11pt}td,th{border:1px solid #ccc;padding:5px 10px}th{background:#1a3c5e;color:white;font-weight:bold}.h{background:#eaf1fb}</style></head><body><table>'
+    +'<tr><td class="h"><b>Date</b></td><td>'+getD()+'</td><td class="h"><b>Lecture</b></td><td>'+getLn()+'</td></tr>'
+    +'<tr><td class="h"><b>Subject</b></td><td>'+getSb()+'</td><td class="h"><b>Faculty</b></td><td>'+getFc()+'</td></tr>'
+    +'<tr><td colspan="4"></td></tr>'
+    +'<tr><th>#</th><th>Enrollment</th><th>Name</th><th>Attendance</th></tr>'
+    +rows
+    +'<tr><td colspan="4"></td></tr>'
+    +'<tr><td colspan="2" class="h"><b>Present</b></td><td colspan="2"><b>'+p+'</b></td></tr>'
+    +'<tr><td colspan="2" class="h"><b>Total</b></td><td colspan="2"><b>'+N+'</b></td></tr>'
+    +'<tr><td colspan="2" class="h"><b>Att%</b></td><td colspan="2"><b>'+Math.round(p/N*100)+'%</b></td></tr>'
+    +'</table></body></html>';
+  var bl=new Blob([xls],{type:'application/vnd.ms-excel'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(bl);
+  a.download='Att_'+getD()+'_L'+getLn()+'.xls';
+  a.click();
+}
+function showCopy(){
+  var rows=['Date	'+getD()+'	Lecture	'+getLn(),'Subject	'+getSb()+'	Faculty	'+getFc(),'','#	Enrollment	Name	Att'];
+  for(var i=0;i<N;i++){var c=document.getElementById('c'+i);rows.push((i+1)+'	'+c.querySelector('.en').textContent+'	'+c.querySelector('.nm').textContent+'	'+(att[i]||'-'));}
+  var p=0;for(var k in att){if(att[k]==='P')p++;}
+  rows.push('','Present	'+p,'Total	'+N,'%	'+Math.round(p/N*100)+'%');
+  showM('Copy to Google Sheets','<p class="hint">Tap Copy, open Google Sheets, long-press a cell and Paste.</p><textarea id="cpA" readonly>'+rows.join('
+')+'</textarea><a class="mbtn mb1" href="#" onclick="doCopy();return false;">&#128203; Copy to Clipboard</a><div class="okbar" id="ok1">&#10003; Copied!</div>');
+}
+function doCopy(){var ta=document.getElementById('cpA');ta.select();ta.setSelectionRange(0,99999);try{document.execCommand('copy');}catch(e){}if(navigator.clipboard)navigator.clipboard.writeText(ta.value).catch(function(){});var ok=document.getElementById('ok1');if(ok)ok.style.display='block';}
+function showGAS(){
+  var scr=document.getElementById('gasStore').value;
+  showM('Auto-sync to Google Drive','<ol><li>Open your Google Sheet on a <b>computer</b>.</li><li>Click <b>Extensions &rarr; Apps Script</b>.</li><li>Delete existing code, paste the script, Save, then Run &rarr; <b>onOpen</b>.</li><li>Reload the sheet &mdash; <b>Attendance menu</b> appears!</li></ol><p class="hint">Script to paste:</p><textarea id="gasA" readonly>'+scr+'</textarea><a class="mbtn mb2" href="#" onclick="copyGAS();return false;">&#128203; Copy Script</a><div class="okbar" id="ok2">&#10003; Copied!</div>');
+}
+function copyGAS(){var ta=document.getElementById('gasA');ta.select();ta.setSelectionRange(0,99999);try{document.execCommand('copy');}catch(e){}if(navigator.clipboard)navigator.clipboard.writeText(ta.value).catch(function(){});var ok=document.getElementById('ok2');if(ok)ok.style.display='block';}
+function showM(t,b){document.getElementById('mT').textContent=t;document.getElementById('mB').innerHTML=b;document.getElementById('ov').classList.add('show');}
+function closeM(){document.getElementById('ov').classList.remove('show');}
+upd();
+</script>
+</body>
+</html>
